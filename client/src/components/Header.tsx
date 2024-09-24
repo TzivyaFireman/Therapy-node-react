@@ -10,7 +10,7 @@ const Header: React.FC = () => {
                     <Button color="inherit" href="/contact">יצירת קשר</Button>
                     <Button color="inherit" href="#appointments">לקביעת תורים</Button>
                     <Button color="inherit" href="/articles">מאמרים</Button>
-                    <Button color="inherit" href="#news">חדשות האתר</Button>
+                    <Button color="inherit" href="/news">חדשות האתר</Button>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Typography variant="h6" component="div">

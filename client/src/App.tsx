@@ -4,6 +4,7 @@ import HomePage from './components/HomePage'; // נניח ש-HomePage ממוקם
 import Header from './components/Header';
 import ContactPage from './components/contact';
 import ArticlesPage from './components/articles';
+import NewsPage from './components/News';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: '/articles',
     element: <ArticlesPage />,
+  },
+  {
+    path: '/news',
+    element: <NewsPage />,
   },
 
 ]);
