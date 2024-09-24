@@ -10,11 +10,11 @@ export interface ArticleProps {
 
 const Article: React.FC<ArticleProps> = (props: ArticleProps) => {
     return (
-        <Grid item xs={12} sm={6} md={4} key={props.id}>
-            <Card sx={{ maxWidth: 345 }}>
+        <Grid item key={props.id}>
+            <Card sx={{ maxWidth: 300 }}>
                 <CardMedia
                     component="img"
-                    height="200"
+                    height="250"
                     image={props.image}
                     alt={props.title}
                 />
