@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Card, CardMedia, CardContent, Typography, Button, Box } from '@mui/material';
 import Article, { ArticleProps } from './Article';
+import AddArticleButton from './AddArticleButton';
 
 const articles: ArticleProps[] = [
   {
@@ -42,16 +43,19 @@ const ArticlesPage: React.FC = () => {
       <Grid container spacing={4}>
         {articles.map((article) => (
           <Grid item xs={12} sm={6} md={4} key={article.id}>
-            <Article 
-              id = { article.id }
+            <Article
+              id={article.id}
               title={article.title}
               description={article.description}
               image={article.image}
               link={article.link}
-        
             />
           </Grid>
         ))}
+        <Grid width={30} item xs={12} sm={6} md={4} >
+          <AddArticleButton />
+        </Grid>
+
       </Grid>
     </Box>
   );
