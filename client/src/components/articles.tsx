@@ -1,7 +1,8 @@
 import React from 'react';
 import { Grid, Card, CardMedia, CardContent, Typography, Button, Box } from '@mui/material';
+import Article, { ArticleProps } from './Article';
 
-const articles = [
+const articles: ArticleProps[] = [
   {
     id: 1,
     title: "ניגון הנשמה",
@@ -39,32 +40,16 @@ const ArticlesPage: React.FC = () => {
         מאמרים
       </Typography>
       <Grid container spacing={4}>
-        {articles.map(article => (
+        {articles.map((article) => (
           <Grid item xs={12} sm={6} md={4} key={article.id}>
-            <Card sx={{ maxWidth: 345 }}>
-              <CardMedia
-                component="img"
-                height="200"
-                image={article.image}
-                alt={article.title}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {article.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {article.description}
-                </Typography>
-              </CardContent>
-              <Button 
-                size="small" 
-                color="primary" 
-                href={article.link} 
-                sx={{ margin: '1rem' }}
-              >
-                לקריאת המאמר
-              </Button>
-            </Card>
+            <Article 
+              id = { article.id }
+              title={article.title}
+              description={article.description}
+              image={article.image}
+              link={article.link}
+        
+            />
           </Grid>
         ))}
       </Grid>
