@@ -3,9 +3,11 @@ import connectDB from './services/dbConnection.service';
 import userRoutes from './routers/userRoutes';
 import appointmentRoutes from './routers/appointmentRoutes';
 import serviceRoutes from './routers/serviceRoutes';
+import articleRoutes from './routers/articleRouter';
 
 const app = express();
 app.use(express.json());
+app.use('/', articleRoutes);
 app.use('/', userRoutes);
 app.use('/', appointmentRoutes);
 app.use('/', serviceRoutes);
