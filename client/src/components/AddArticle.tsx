@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Card, CardMedia, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addArticle } from '../store/slices/articleSlice';
+import { AppDispatch } from '../store/store';
 
 const AddArticlePage: React.FC = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [content, setContent] = useState(''); // שדה לתוכן המאמר
+  const [content, setContent] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>('');
+  const [link, setLink] = useState(''); // שדה link
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
@@ -22,13 +27,25 @@ const AddArticlePage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // כאן תוכל לכתוב את הקוד לשליחת הנתונים לשרת
-    console.log({ title, description, content, image });
+    
+    // Prepare the article data
+    const articleData = {
+      id: '', // צור מזהה ייחודי אם יש צורך
+      title,
+      description,
+      content,
+      image: image ? URL.createObjectURL(image) : '', // צור כתובת לתמונה אם הועלתה
+      link, // שלח את ה-link
+    };
 
-    // הפניה לעמוד אחר לאחר ההגשה (למשל, עמוד המאמרים)
-    navigate('/articles');
+    try {
+      await dispatch(addArticle(articleData) as any);
+      navigate('/articles'); // Redirect after successful dispatch
+    } catch (error) {
+      console.error('Failed to save the article:', error);
+    }
   };
 
   return (
@@ -57,9 +74,16 @@ const AddArticlePage: React.FC = () => {
           fullWidth
           label="תוכן המאמר"
           multiline
-          rows={6} // הגדרת מספר השורות המומלץ לתוכן המאמר
+          rows={6}
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          label="קישור למאמר"
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
           margin="normal"
         />
         <Button

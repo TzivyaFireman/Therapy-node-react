@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface Article {
-    id: number;
+    id: string;
     title: string;
     description: string;
     image: string;
@@ -27,6 +27,12 @@ export const fetchArticles = createAsyncThunk('articles/fetchArticles', async ()
     return response.data;
 });
 
+// Async thunk to add a new article to the server
+export const addArticle = createAsyncThunk('articles/addArticle', async (newArticle: Omit<Article, 'id'>) => {
+    const response = await axios.post('http://localhost:3000/articles', newArticle);
+    return response.data;
+});
+
 const articlesSlice = createSlice({
     name: 'articles',
     initialState,
@@ -43,6 +49,9 @@ const articlesSlice = createSlice({
             .addCase(fetchArticles.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message || 'Failed to fetch articles';
+            })
+            .addCase(addArticle.fulfilled, (state, action) => {
+                state.articles.push(action.payload);
             });
     },
 });
