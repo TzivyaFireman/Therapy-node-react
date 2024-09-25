@@ -1,45 +1,26 @@
-import React from 'react';
-import { Grid, Card, CardMedia, CardContent, Typography, Button, Box } from '@mui/material';
-import Article, { ArticleProps } from './Article';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Grid, Typography, Box } from '@mui/material';
+import Article from './Article';
 import AddArticleButton from './AddArticleButton';
-
-const articles: ArticleProps[] = [
-  {
-    id: 1,
-    title: "ניגון הנשמה",
-    description: "לחיות את החיים הפנימיים ברובד עמוק יותר.",
-    image: "/images/piano.png",
-    link: "/articles/1"
-  },
-  {
-    id: 2,
-    title: "פחד קהל",
-    description: "כך תתמודדו עם פחד הקהל שלכם.",
-    image: "/images/cats.jpg",
-    link: "/articles/2"
-  },
-  {
-    id: 3,
-    title: "כוחם של רגשות",
-    description: "איך הרגשות משפיעים על חיינו היומיומיים?",
-    image: "/images/redflowers.jpg",
-    link: "/articles/3"
-  },
-  {
-    id: 4,
-    title: "אמנות ההתבוננות",
-    description: "למדו איך לפתח מודעות עצמית באמצעות התבוננות פנימית.",
-    image: "/images/boo.png",
-    link: "/articles/4"
-  }
-];
+import { RootState, AppDispatch } from '../store/store';
+import { fetchArticles } from '../store/slices/articleSlice';
 
 const ArticlesPage: React.FC = () => {
-  return (
-    <Box sx={{ padding: '2rem' }}>
-      <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-        מאמרים
-      </Typography>
+  const dispatch: AppDispatch = useDispatch();
+  const { articles, status, error } = useSelector((state: RootState) => state.articles);
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchArticles());
+    }
+  }, [status, dispatch]);
+
+  let content;
+  if (status === 'loading') {
+    content = <div>Loading...</div>;
+  } else if (status === 'succeeded') {
+    content = (
       <Grid container spacing={4}>
         {articles.map((article) => (
           <Grid item xs={12} sm={6} md={4} key={article.id}>
@@ -52,11 +33,21 @@ const ArticlesPage: React.FC = () => {
             />
           </Grid>
         ))}
-        <Grid width={30} item xs={12} sm={6} md={4} >
+        <Grid width={30} item xs={12} sm={6} md={4}>
           <AddArticleButton />
         </Grid>
-
       </Grid>
+    );
+  } else if (status === 'failed') {
+    content = <div>Error: {error}</div>;
+  }
+
+  return (
+    <Box sx={{ padding: '2rem' }}>
+      <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+        מאמרים
+      </Typography>
+      {content}
     </Box>
   );
 }
