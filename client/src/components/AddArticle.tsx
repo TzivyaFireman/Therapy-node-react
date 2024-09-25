@@ -11,7 +11,6 @@ const AddArticlePage: React.FC = () => {
   const [content, setContent] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>('');
-  const [link, setLink] = useState(''); // שדה link
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
 
@@ -37,7 +36,6 @@ const AddArticlePage: React.FC = () => {
       description,
       content,
       image: image ? URL.createObjectURL(image) : '', // צור כתובת לתמונה אם הועלתה
-      link, // שלח את ה-link
     };
 
     try {
@@ -77,13 +75,6 @@ const AddArticlePage: React.FC = () => {
           rows={6}
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          margin="normal"
-        />
-        <TextField
-          fullWidth
-          label="קישור למאמר"
-          value={link}
-          onChange={(e) => setLink(e.target.value)}
           margin="normal"
         />
         <Button

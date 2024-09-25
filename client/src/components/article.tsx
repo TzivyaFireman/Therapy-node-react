@@ -4,8 +4,10 @@ export interface ArticleProps {
     id: string;
     title: string;
     description: string;
+    content: string;
     image: string;
-    link: string;
+    onClick: () => void; // נוסיף את onClick כאן
+
 }
 
 const Article: React.FC<ArticleProps> = (props: ArticleProps) => {
@@ -29,8 +31,8 @@ const Article: React.FC<ArticleProps> = (props: ArticleProps) => {
                 <Button
                     size="small"
                     color="primary"
-                    href={props.link}
                     sx={{ margin: '1rem' }}
+                    onClick={props.onClick}
                 >
                     לקריאת המאמר
                 </Button>

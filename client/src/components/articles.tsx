@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Grid, Typography, Box } from '@mui/material';
-import Article from './Article';
+import { Grid, Typography, Box, Modal } from '@mui/material';
+import Article, { ArticleProps } from './article';
 import AddArticleButton from './AddArticleButton';
 import { RootState, AppDispatch } from '../store/store';
 import { fetchArticles } from '../store/slices/articleSlice';
@@ -9,12 +9,21 @@ import { fetchArticles } from '../store/slices/articleSlice';
 const ArticlesPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { articles, status, error } = useSelector((state: RootState) => state.articles);
+  const [selectedArticle, setSelectedArticle] = useState<null | { id: string; title: string; description: string; image: string; content: string }>(null);
 
   useEffect(() => {
     if (status === 'idle') {
       dispatch(fetchArticles());
     }
   }, [status, dispatch]);
+
+  const handleOpenArticle = (article: ArticleProps) => {
+    setSelectedArticle(article);
+  };
+
+  const handleCloseArticle = () => {
+    setSelectedArticle(null);
+  };
 
   let content;
   if (status === 'loading') {
@@ -29,7 +38,8 @@ const ArticlesPage: React.FC = () => {
               title={article.title}
               description={article.description}
               image={article.image}
-              link={article.link}
+              content={article.content}
+              onClick={() => handleOpenArticle(article as ArticleProps)} // פתיחת המאמר במודאל
             />
           </Grid>
         ))}
@@ -48,8 +58,33 @@ const ArticlesPage: React.FC = () => {
         מאמרים
       </Typography>
       {content}
+
+      {/* Modal להצגת מאמר מוגדל */}
+      <Modal
+        open={!!selectedArticle}
+        onClose={handleCloseArticle}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        BackdropProps={{
+          style: { backgroundColor: 'rgba(0, 0, 0, 0.5)' }, // רקע מואפר
+        }}
+      >
+        <Box sx={{ bgcolor: 'background.paper', padding: '2rem', maxWidth: '600px', borderRadius: '10px' }}>
+          {selectedArticle && (
+            <>
+              <img src={selectedArticle.image} style={{ width: '100%', marginBottom: '1rem' }} />
+              <Typography variant="body1">
+                {selectedArticle.content}
+              </Typography>
+            </>
+          )}
+        </Box>
+      </Modal>
     </Box>
   );
-}
+};
 
 export default ArticlesPage;
