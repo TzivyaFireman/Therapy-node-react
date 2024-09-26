@@ -33,6 +33,12 @@ export const addArticle = createAsyncThunk('articles/addArticle', async (newArti
     return response.data;
 });
 
+export const deleteArticle = createAsyncThunk('articles/deleteArticle', async (id: string) => {
+        const response = await axios.delete(`http://localhost:3000/articles/${id}`);
+        return id; // נחזיר את ה-id כדי שנוכל להסיר אותו מה-state
+    }
+);
+
 const articlesSlice = createSlice({
     name: 'articles',
     initialState,
@@ -52,6 +58,9 @@ const articlesSlice = createSlice({
             })
             .addCase(addArticle.fulfilled, (state, action) => {
                 state.articles.push(action.payload);
+            })
+            .addCase(deleteArticle.fulfilled, (state, action) => {
+                state.articles = state.articles.filter(article => article.id !== action.payload);
             });
     },
 });
