@@ -1,27 +1,14 @@
-import { DeleteOutline, Edit } from "@mui/icons-material";
 import { Button, Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { deleteArticle } from "../store/slices/articleSlice";
-import { AppDispatch } from "../store/store";
 
 export interface ArticleProps {
-    id: string;
+    id: number;
     title: string;
     description: string;
-    content: string;
     image: string;
-    onClick: () => void; // נוסיף את onClick כאן
-
+    link: string;
 }
 
 const Article: React.FC<ArticleProps> = (props: ArticleProps) => {
-    const dispatch = useDispatch<AppDispatch>(); // שימוש ב-AppDispatch במקום Dispatch רגיל
-
-    const handleDelete = () => {
-        dispatch(deleteArticle(props.id));
-    };
-
-
     return (
         <Grid item key={props.id}>
             <Card sx={{ maxWidth: 300 }}>
@@ -42,12 +29,11 @@ const Article: React.FC<ArticleProps> = (props: ArticleProps) => {
                 <Button
                     size="small"
                     color="primary"
+                    href={props.link}
                     sx={{ margin: '1rem' }}
-                    onClick={props.onClick}
                 >
                     לקריאת המאמר
                 </Button>
-                <Button onClick={handleDelete}><DeleteOutline></DeleteOutline></Button>
             </Card>
         </Grid>
     );
