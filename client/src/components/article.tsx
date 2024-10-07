@@ -8,8 +8,9 @@ export interface ArticleProps {
     id: string;
     title: string;
     description: string;
+    content: string;
     image: string;
-    onClick: () => void; // נוסיף את onClick כאן
+    onClick: () => void;
 }
 
 const Article: React.FC<ArticleProps> = (props: ArticleProps) => {

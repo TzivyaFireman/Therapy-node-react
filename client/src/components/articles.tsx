@@ -9,7 +9,7 @@ import { fetchArticles } from '../store/slices/articleSlice';
 const ArticlesPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { articles, status, error } = useSelector((state: RootState) => state.articles);
-  const [selectedArticle, setSelectedArticle] = useState<null | { id: string; title: string; description: string; image: string; content: string }>(null);
+  const [selectedArticle, setSelectedArticle] = useState<null | ArticleProps>(null);
 
   useEffect(() => {
     if (status === 'idle') {
@@ -39,7 +39,7 @@ const ArticlesPage: React.FC = () => {
               description={article.description}
               image={article.image}
               content={article.content}
-              onClick={() => handleOpenArticle(article as ArticleProps)} // פתיחת המאמר במודאל
+              onClick={() => handleOpenArticle(article as ArticleProps)}
             />
           </Grid>
         ))}
@@ -69,7 +69,7 @@ const ArticlesPage: React.FC = () => {
           justifyContent: 'center',
         }}
         BackdropProps={{
-          style: { backgroundColor: 'rgba(0, 0, 0, 0.5)' }, // רקע מואפר
+          style: { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
         }}
       >
         <Box sx={{ bgcolor: 'background.paper', padding: '2rem', maxWidth: '600px', borderRadius: '10px' }}>
