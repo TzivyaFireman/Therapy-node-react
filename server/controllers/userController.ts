@@ -10,13 +10,13 @@ export class UserController {
 
 
     async createUser(req: Request, res: Response) {
-        const { name, email, password } = req.body;
+        const { username, email, password } = req.body;
         try {
             const existingUser = await this.userService.getUserByEmail(email);
             if (existingUser) {
                 return res.status(400).json({ message: 'User already exists' });
             }
-            const user = await this.userService.createUser(name, email, password);
+            const user = await this.userService.createUser(username, email, password);
             return res.status(201).json(user);
         } catch (error: any) {
             return res.status(500).json({ message: error.message });
