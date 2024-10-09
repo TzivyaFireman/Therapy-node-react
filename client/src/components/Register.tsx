@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
 import { Typography, Box, TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../store/store';
+import { registerUser } from '../store/slices/userSlice';
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
 
-  const handleRegister = (event: React.FormEvent) => {
+  const handleRegister = async (event: React.FormEvent) => {
     event.preventDefault();
-    navigate('/');
+    try {
+      await dispatch(registerUser({ username, email, password })).unwrap();
+      navigate('/'); // נווט לאחר הצלחת ההרשמה
+    } catch (error) {
+      console.error('Failed to register user:', error);
+    }
   };
+
 
   return (
     <Box
