@@ -26,4 +26,9 @@ export class UserService {
   async getUserByEmail(email: string): Promise<IUser | null> {
     return UserModel.findOne({ email }).exec();
   }
+
+  // חיפוש משתמש לפי שם משתמש
+  async getUserByUsername(name: string): Promise<IUser | null> {
+    return UserModel.findOne({ name }).exec();
+  }
 }
