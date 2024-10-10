@@ -22,11 +22,11 @@ export class UserController {
             return res.status(500).json({ message: error.message });
         }
     }
-    
+
     async loginUser(req: Request, res: Response) {
-        const { email, password } = req.body;
+        const { username, password } = req.body;
         try {
-            const user = await this.userService.getUserByEmail(email);
+            const user = await this.userService.getUserByUsername(username);
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
