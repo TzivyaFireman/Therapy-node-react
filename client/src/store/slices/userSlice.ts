@@ -24,6 +24,12 @@ export const registerUser = createAsyncThunk('user/register', async (newUser: Us
     return response.data;
 });
 
+// Thunk to login user
+export const loginUser = createAsyncThunk('user/login', async (credentials: { username: string; password: string }) => {
+    const response = await axios.post('http://localhost:3000/login', credentials);
+    return response.data;
+});
+
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -39,6 +45,17 @@ const userSlice = createSlice({
             .addCase(registerUser.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message || 'Failed to register user';
+            })
+            // טיפול בתהליך הלוגין
+            .addCase(loginUser.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(loginUser.fulfilled, (state) => {
+                state.status = 'succeeded';
+            })
+            .addCase(loginUser.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message || 'Failed to login';
             });
     },
 });
